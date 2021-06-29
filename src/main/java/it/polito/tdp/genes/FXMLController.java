@@ -7,6 +7,8 @@ package it.polito.tdp.genes;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.genes.db.GenesDao;
+import it.polito.tdp.genes.model.Adiacenti;
 import it.polito.tdp.genes.model.Genes;
 import it.polito.tdp.genes.model.Model;
 import javafx.event.ActionEvent;
@@ -30,7 +32,7 @@ public class FXMLController {
     private Button btnCreaGrafo; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbGeni"
-    private ComboBox<?> cmbGeni; // Value injected by FXMLLoader
+    private ComboBox<Genes> cmbGeni; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnGeniAdiacenti"
     private Button btnGeniAdiacenti; // Value injected by FXMLLoader
@@ -46,15 +48,29 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-    	
+    	model.creaGrafo();
+    	txtResult.appendText("GRAFO CREATO: "+ "VERTICI " +model.totVertici() + " ARCHI: " + model.totArchi());
 
+    	cmbGeni.getItems().addAll(model.getVertici());
+    	
     }
 
     @FXML
     void doGeniAdiacenti(ActionEvent event) {
 
     	
+    	txtResult.appendText("\n");
+    	if(cmbGeni.getValue()!=null) {
+    	for(Adiacenti a: model.getAdiacenti(cmbGeni.getValue())) {
+    		txtResult.appendText(a.toString()+"\n");
+    	
+      	}
+    	}else {
+    		txtResult.appendText("SELEZIONARE UN GENE PER L'ANALISI");
+    	}
+    	
     }
+    	
 
     @FXML
     void doSimula(ActionEvent event) {
